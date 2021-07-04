@@ -32,4 +32,8 @@ public class ClientService {
         //если клиент не сохранился
         return null;
     }
+
+    public int deleteClientById(Long id) {
+        return clientRepository.deleteById(id);
+    }
 }

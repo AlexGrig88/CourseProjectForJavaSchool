@@ -33,10 +33,14 @@ public class CardService {
         return cardRepository.save(card);
     }
 
+    public int deleteCardById(Long id) {
+        return cardRepository.deleteById(id);
+    }
+
     private String genericNewCardNumber() {
         uniqueCardNumbers = new HashSet<>(cardRepository.findAllCardNumbers());
         if (uniqueCardNumbers == null || uniqueCardNumbers.size() == 0) {
-            return "4000123499995555";
+            return "4000003499995555";
         }
         Random random = new Random();
 

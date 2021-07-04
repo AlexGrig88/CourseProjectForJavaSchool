@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,31 +43,46 @@ public class JdbcClientRepository implements ClientRepository {
                         rs.getLong("id"),
                         rs.getString("first_name"),
                         rs.getString("last_name"),
-                        rs.getString("patronymic")
+                        rs.getString("patronymic"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getDate("dateOfBirth").toLocalDate()
                 ))
                 ),
                 phone);
     }
 
+    @Override
+    public Optional<Client> findById(Long id) {
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM clients WHERE id = ?",
+                ((rs, rowNum) -> Optional.of(new Client(
+                        rs.getLong("id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("patronymic"),
+                        rs.getString("phone"),
+                        rs.getString("email"),
+                        rs.getDate("dateOfBirth").toLocalDate()
+                ))
+                ),
+                id);
+    }
+    @Override
+    public int deleteById(Long id) {
+        return jdbcTemplate.update("DELETE FROM clients WHERE id = ?", id);
+    }
 
     @Override
     public int update(Client client) {
         return 0;
     }
 
-    @Override
-    public int deleteById(Long id) {
-        return 0;
-    }
 
     @Override
     public List<Client> findAll() {
         return null;
     }
 
-    @Override
-    public Optional<Client> findById(Long id) {
-        return Optional.empty();
-    }
 
 }
