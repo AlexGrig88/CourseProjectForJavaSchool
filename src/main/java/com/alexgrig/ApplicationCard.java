@@ -47,7 +47,8 @@ public class ApplicationCard implements CommandLineRunner {
                             "balance NUMERIC(13,2), " +
                             "creation_date TIMESTAMP, " +
                             "expiration_date TIMESTAMP, " +
-                            "client_id INTEGER REFERENCES clients (id) ON DELETE CASCADE" +
+                            "client_id INTEGER REFERENCES clients (id) ON DELETE CASCADE, " +
+                            "is_closed boolean" +
                             ")"
             );
 

@@ -28,7 +28,7 @@ public class ScheduledClientNotificationService {
     }
 
 
-    @Scheduled(initialDelay = 4000L, fixedDelay = 120000L)
+    @Scheduled(initialDelay = 4000L, fixedDelay = 500L)
     public void sendEmail() {
 
         List<Card> list = cardRepository.findAll();
@@ -42,7 +42,6 @@ public class ScheduledClientNotificationService {
             int remainderOfMonths = period.getYears() * 12 + period.getMonths();
             //если остался 1 месяц до истечения срока действия карты отправляем на почту сообщение
             if (remainderOfMonths == 1) {
-                System.out.println("list size = " + list.size());
                 String messageBody = String.format("Добрый день %s %s! Сообщаем вам, что срок действия вашей карты истекает.\n%s",
                         card.getOwner().getLastName(), card.getOwner().getFirstName(), fastChangingTime.toString());
 
@@ -51,6 +50,10 @@ public class ScheduledClientNotificationService {
                         messageBody,
                         "Сообщение от банка GreenBank");
                 System.out.println("Письмо отправлено " + card.getOwner().getLastName());
+            }
+            if (remainderOfMonths == 0) {
+                System.out.println("Карта закрыта");
+                cardRepository.updateSetTrueForClosed(card);
             }
         }
 

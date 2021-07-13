@@ -25,15 +25,16 @@ public class JdbcCardRepository implements CardRepository {
     @Override
     public int save(Card card) {
         return jdbcTemplate.update(
-                "INSERT INTO cards (card_number, pin, card_specific, payment_system, balance, creation_date, expiration_date, client_id)" +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", card.getCardNumber(), card.getPin(), card.getCardSpecific(),
+                "INSERT INTO cards (card_number, pin, card_specific, payment_system, balance, creation_date, expiration_date, client_id, is_closed)" +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", card.getCardNumber(), card.getPin(), card.getCardSpecific(),
                 card.getPaymentSystem(), card.getBalance(), card.getCreationDate(), card.getExpirationDate(),
-                card.getOwner().getId());
+                card.getOwner().getId(), card.isClosed());
     }
 
     @Override
-    public int update(Card card) {
-        return 0;
+    public int updateSetTrueForClosed(Card card) {
+        return jdbcTemplate.update(
+                "UPDATE cards SET is_closed = true WHERE id = ?", card.getId());
     }
 
     @Override

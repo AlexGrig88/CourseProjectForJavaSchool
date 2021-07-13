@@ -13,29 +13,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name="cards")
-public class Card implements Serializable {
+public class Card {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String pin;
     private BigDecimal balance;
-    @Column(name="card_number", unique = true)
     private String cardNumber;
-    @Column(name="card_specific")
     private String cardSpecific;
-    @Column(name="payment_system")
     private String paymentSystem;
-    @Column(name="creation_date")
     private LocalDateTime creationDate;
-    @Column(name="expiration_date")
     private LocalDateTime expirationDate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
+    private boolean closed;
+
     private Client owner;
 
     public Card(Client owner, String cardSpecific, String paymentSystem) {
@@ -43,7 +34,7 @@ public class Card implements Serializable {
         this.cardSpecific = cardSpecific;
         this.paymentSystem = paymentSystem;
         this.creationDate = LocalDateTime.now();
-        this.expirationDate = LocalDateTime.now().plusYears(1);
+        this.expirationDate = LocalDateTime.now().plusYears(2);
     }
 
     public Card(Long id, String pin, BigDecimal balance, String cardNumber,
